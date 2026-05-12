@@ -1,0 +1,281 @@
+/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap');
+
+/* ─── CSS Variables (Design Tokens) ───────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --color-background-primary:   #1a1625;
+  --color-background-secondary: #221d2e;
+  --color-background-tertiary:  #2c2540;
+
+  /* Info (blue/indigo) */
+  --color-background-info:      rgba(99, 102, 241, 0.18);
+  --color-border-info:          rgba(99, 102, 241, 0.55);
+  --color-text-info:            #a5b4fc;
+
+  /* Success (green/teal) */
+  --color-background-success:   rgba(16, 185, 129, 0.15);
+  --color-border-success:       rgba(16, 185, 129, 0.5);
+  --color-text-success:         #6ee7b7;
+
+  /* Warning (amber/saffron) */
+  --color-background-warning:   rgba(245, 158, 11, 0.15);
+  --color-border-warning:       rgba(245, 158, 11, 0.5);
+  --color-text-warning:         #fcd34d;
+
+  /* Danger (red) */
+  --color-background-danger:    rgba(239, 68, 68, 0.15);
+  --color-border-danger:        rgba(239, 68, 68, 0.5);
+  --color-text-danger:          #fca5a5;
+
+  /* Text */
+  --color-text-primary:         #f1eeff;
+  --color-text-secondary:       #9d96b8;
+  --color-text-tertiary:        #5f5880;
+
+  /* Borders */
+  --color-border-primary:       rgba(255, 255, 255, 0.12);
+  --color-border-tertiary:      rgba(255, 255, 255, 0.08);
+
+  /* Border radii */
+  --border-radius-sm:  4px;
+  --border-radius-md:  8px;
+  --border-radius-lg:  12px;
+  --border-radius-xl:  18px;
+  --border-radius-2xl: 24px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 4px rgba(0,0,0,0.4);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.6);
+
+  /* Accent gradient */
+  --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #8b5cf6 100%);
+  --gradient-header: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+/* ─── Global Reset & Base ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans Devanagari', 'Segoe UI', sans-serif;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99,102,241,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(245,158,11,0.10) 0%, transparent 60%);
+  background-attachment: fixed;
+  padding: 1.5rem 1rem 3rem;
+}
+
+#root {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ─── Scrollbar ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: rgba(99,102,241,0.4); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.7); }
+
+/* ─── Typography helpers ───────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Buttons ──────────────────────────────────────────────────────────────── */
+button {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-md);
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+  padding: 6px 14px;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease;
+  line-height: 1.4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+button:hover:not(:disabled) {
+  background: var(--color-background-tertiary);
+  border-color: rgba(255,255,255,0.2);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 2px solid rgba(99,102,241,0.7);
+  outline-offset: 2px;
+}
+
+/* ─── Inputs & Selects ─────────────────────────────────────────────────────── */
+input[type="text"],
+input[type="date"],
+select {
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  appearance: auto;
+  -webkit-appearance: auto;
+}
+
+input[type="text"]::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+  border-color: rgba(99,102,241,0.65);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+select option {
+  background: #2c2540;
+  color: var(--color-text-primary);
+}
+
+/* Date input calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6) sepia(1) saturate(3) hue-rotate(200deg);
+  cursor: pointer;
+}
+
+/* ─── Calendar cell hover ──────────────────────────────────────────────────── */
+/* Applied via data attr from JSX if needed; also via CSS for generic div hover */
+[data-cell]:hover {
+  background: var(--color-background-tertiary) !important;
+}
+
+/* ─── Micro-animation: fade-in for panels ──────────────────────────────────── */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Reminder list panel */
+[style*="showReminderList"],
+div[style*="All Reminders"] {
+  animation: fadeSlideIn 0.22s ease;
+}
+
+/* Modal backdrop */
+div[style*="position: fixed"][style*="rgba(0,0,0"] {
+  animation: fadeIn 0.18s ease;
+}
+
+/* Modal dialog */
+div[style*="min(480px"] {
+  animation: scaleIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── Utility: gradient text for the app title ─────────────────────────────── */
+.gradient-text {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  body {
+    padding: 0.75rem 0.5rem 2rem;
+  }
+
+  #root {
+    max-width: 100%;
+  }
+
+  /* Stack the bottom two-column panel */
+  div[style*="gridTemplateColumns: \"1fr 1fr\""] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── Calendar day cell hover (since JSX uses inline styles) ───────────────── */
+/* We style the grid's child divs with a subtle hover via CSS sibling trick */
+div[style*="minHeight: 72"] {
+  transition: background 0.15s ease !important;
+}
+
+div[style*="minHeight: 72"]:hover {
+  background: var(--color-background-tertiary) !important;
+  cursor: pointer;
+}
+
+/* ─── Today's info bar & reminder panel smooth appear ──────────────────────── */
+div[style*="borderRadius: \"var(--border-radius-lg)\""] {
+  transition: box-shadow 0.2s ease;
+}
+
+/* ─── Modal scrollbar ──────────────────────────────────────────────────────── */
+div[style*="overflowY: auto"] {
+  scroll-behavior: smooth;
+}
+
+/* ─── Reminder dot pulse ───────────────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+div[style*="width: 5"][style*="height: 5"][style*="borderRadius: \"50%\""] {
+  animation: pulse 2s ease-in-out infinite;
+}
