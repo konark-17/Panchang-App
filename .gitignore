@@ -1,0 +1,18 @@
+# ─── Frontend ──────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+
+# ─── Backend ───────────────────────────────
+backend/server
+backend/server.exe
+backend/panchang
+backend/panchang.exe
+
+# ─── OS / Editor ───────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
