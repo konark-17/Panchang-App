@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { getLocalISODate } from '../utils/tithi'
 
 const STORAGE_KEY = 'panchang_reminders'
 
@@ -27,7 +28,7 @@ export function useReminders() {
       date: form.type === 'tithi' && form.recurring
         ? null
         : form.type === 'tithi' && !form.recurring
-          ? selectedDate.toISOString().slice(0, 10)
+          ? getLocalISODate(selectedDate)
           : form.date,
     }
     setReminders(prev => [...prev, newR])

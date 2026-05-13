@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { getLocalISODate } from '../../utils/tithi'
 import CalendarCell, { CalendarHeader } from './CalendarCell'
 import './Calendar.css'
 
@@ -34,7 +35,7 @@ export default function Calendar({ year, month, days, reminders, selectedDate, t
 
       <div className="calendar__grid">
         {cells.map((date, idx) => {
-          const dateStr = date ? date.toISOString().slice(0, 10) : null
+          const dateStr = date ? getLocalISODate(date) : null
           return (
             <CalendarCell
               key={date ? dateStr : `empty-${idx}`}

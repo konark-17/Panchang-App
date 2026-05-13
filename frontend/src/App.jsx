@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TITHIS } from './utils/tithi'
+import { TITHIS, getLocalISODate } from './utils/tithi'
 import { usePanchang }       from './hooks/usePanchang'
 import { useReminders }      from './hooks/useReminders'
 import { useNotifications }  from './hooks/useNotifications'
@@ -25,12 +25,12 @@ export default function App() {
   const { reminders, addReminder, deleteReminder } = useReminders()
 
   // Today's tithi (from API data or fall back to local TITHIS array index)
-  const todayStr   = today.toISOString().slice(0, 10)
+  const todayStr   = getLocalISODate(today)
   const todayDay   = days.find(d => d.date === todayStr)
   const todayTithi = todayDay?.tithi ?? null
 
   // Selected date's panchang
-  const selectedStr  = selectedDate?.toISOString().slice(0, 10)
+  const selectedStr  = selectedDate ? getLocalISODate(selectedDate) : null
   const selectedDay  = days.find(d => d.date === selectedStr) ?? null
 
   // Fire browser notifications

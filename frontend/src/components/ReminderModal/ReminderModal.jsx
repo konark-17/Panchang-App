@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { UNIQUE_TITHI_NAMES, DAYS_EN, HINDI_DAYS } from '../../utils/tithi'
+import { UNIQUE_TITHI_NAMES, DAYS_EN, HINDI_DAYS, getLocalISODate } from '../../utils/tithi'
 import './ReminderModal.css'
 
 const DEFAULT_FORM = {
@@ -9,13 +9,13 @@ const DEFAULT_FORM = {
   paksha: 'Shukla',
   dayOfWeek: 0,
   recurring: true,
-  date: new Date().toISOString().slice(0, 10),
+  date: getLocalISODate(new Date()),
 }
 
 export default function ReminderModal({ selectedDate, onSave, onClose }) {
   const [form, setForm] = useState({
     ...DEFAULT_FORM,
-    date: selectedDate ? selectedDate.toISOString().slice(0, 10) : DEFAULT_FORM.date,
+    date: selectedDate ? getLocalISODate(selectedDate) : DEFAULT_FORM.date,
   })
 
   const set = patch => setForm(f => ({ ...f, ...patch }))
