@@ -1,0 +1,138 @@
+/* ─── Grid wrapper ─────────────────────────────────── */
+.calendar {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 0.5px solid var(--border-subtle);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ─── Loading overlay ──────────────────────────────── */
+.calendar__loading {
+  position: absolute;
+  inset: 40px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26,22,37,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+/* ─── Day header row ────────────────────────────────── */
+.cal-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 0.5px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+}
+.cal-header__cell {
+  padding: 8px 4px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.cal-header__cell--weekend { color: var(--text-danger); }
+.cal-header__hindi { font-size: 9px; color: var(--text-tertiary); }
+
+/* ─── Calendar grid ─────────────────────────────────── */
+.calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+/* ─── Individual cell ───────────────────────────────── */
+.cal-cell {
+  min-height: 76px;
+  padding: 6px 6px 4px;
+  border-right: 0.5px solid var(--border-subtle);
+  border-bottom: 0.5px solid var(--border-subtle);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.14s ease;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+}
+.cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell:hover { background: var(--bg-tertiary); }
+.cal-cell:focus-visible {
+  outline: 2px solid rgba(99,102,241,0.6);
+  outline-offset: -2px;
+}
+
+.cal-cell--empty { cursor: default; }
+.cal-cell--empty:hover { background: transparent; }
+
+.cal-cell--today    { background: var(--bg-success) !important; }
+.cal-cell--selected { background: var(--bg-info)    !important; }
+
+/* ─── Cell content ──────────────────────────────────── */
+.cal-cell__date {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.cal-cell--weekend  .cal-cell__date { color: var(--text-danger); }
+.cal-cell--selected .cal-cell__date { color: var(--text-info); }
+
+.cal-cell__tithi {
+  font-size: 9.5px;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+.cal-cell--selected .cal-cell__tithi { color: var(--text-info); opacity: 0.85; }
+
+.cal-cell__moon {
+  font-size: 11px;
+  margin-top: auto;
+  line-height: 1;
+}
+
+/* ─── Reminder dots ─────────────────────────────────── */
+.cal-cell__dots {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.reminder-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-danger);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ─── Legend ─────────────────────────────────────────── */
+.calendar__legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  border-top: 0.5px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+  align-items: center;
+}
+.calendar__legend-dot { display: flex; align-items: center; gap: 4px; }
+.calendar__legend-today    { background: var(--bg-success); padding: 1px 8px; border-radius: 4px; color: var(--text-success); }
+.calendar__legend-selected { background: var(--bg-info);    padding: 1px 8px; border-radius: 4px; color: var(--text-info);    }
+
+/* ─── Mobile ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .cal-cell { min-height: 60px; padding: 4px 3px 3px; }
+  .cal-cell__date { font-size: 13px; }
+  .cal-cell__tithi { font-size: 8.5px; }
+}

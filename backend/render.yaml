@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: panchang-api
+    env: go
+    buildCommand: go build -o server .
+    startCommand: ./server
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8080

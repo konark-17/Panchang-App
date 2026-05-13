@@ -1,0 +1,163 @@
+/* ─── Backdrop ─────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.18s ease;
+}
+
+/* ─── Dialog ───────────────────────────────────────── */
+.modal-dialog {
+  background: var(--bg-secondary);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  width: min(480px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: scaleIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.modal__title { font-size: 18px; font-weight: 600; }
+
+.modal__close {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--text-secondary);
+  min-height: auto;
+  padding: 2px 6px;
+  line-height: 1;
+}
+.modal__close:hover { color: var(--text-primary); background: none; }
+
+.modal__label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  margin-top: 2px;
+}
+
+/* ─── Type grid ────────────────────────────────────── */
+.modal__type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.modal__type-btn {
+  flex-direction: column;
+  padding: 12px;
+  font-size: 13px;
+  gap: 6px;
+  justify-content: center;
+  background: transparent;
+}
+.modal__type-btn--active {
+  background: var(--bg-info);
+  border-color: var(--border-info);
+  color: var(--text-info);
+}
+.modal__type-icon { font-size: 22px; }
+
+/* ─── Tithi / Paksha row ───────────────────────────── */
+.modal__row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 0.75rem; }
+.modal__field { display: flex; flex-direction: column; }
+
+.modal__paksha-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+.modal__paksha-btn {
+  flex-direction: column;
+  padding: 7px 4px;
+  font-size: 11px;
+  gap: 2px;
+  background: transparent;
+}
+.modal__paksha-btn--active {
+  background: var(--bg-info);
+  border-color: var(--border-info);
+  color: var(--text-info);
+}
+.modal__paksha-hindi { font-size: 10px; color: var(--text-secondary); }
+.modal__paksha-btn--active .modal__paksha-hindi { color: var(--text-info); }
+
+/* ─── Recurring toggle ────────────────────────────── */
+.modal__recurring {
+  background: var(--bg-tertiary);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  margin-top: 0.75rem;
+}
+.modal__recurring-title { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
+.modal__recurring-btns  { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.modal__recurring-btn   { padding: 8px; font-size: 13px; background: transparent; }
+.modal__recurring-btn--yes {
+  background: var(--bg-success);
+  border-color: var(--border-success);
+  color: var(--text-success);
+}
+.modal__recurring-btn--no {
+  background: var(--bg-warning);
+  border-color: var(--border-warning);
+  color: var(--text-warning);
+}
+
+/* ─── Days grid ───────────────────────────────────── */
+.modal__days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.modal__day-btn {
+  flex-direction: column;
+  padding: 6px 2px;
+  font-size: 11px;
+  gap: 2px;
+  background: transparent;
+  justify-content: center;
+}
+.modal__day-btn--active {
+  background: var(--bg-info);
+  border-color: var(--border-info);
+  color: var(--text-info);
+}
+.modal__day-hindi { font-size: 9px; color: var(--text-tertiary); }
+.modal__day-btn--active .modal__day-hindi { color: var(--text-info); }
+
+/* ─── Actions ─────────────────────────────────────── */
+.modal__actions { display: flex; gap: 8px; margin-top: 1rem; }
+.modal__cancel  { flex: 1; padding: 10px; justify-content: center; }
+.modal__save {
+  flex: 2;
+  padding: 10px;
+  font-size: 14px;
+  justify-content: center;
+  background: var(--bg-info);
+  border-color: var(--border-info);
+  color: var(--text-info);
+}
+.modal__save:hover:not(:disabled) { background: rgba(99,102,241,0.28); }
+.modal__save:disabled {
+  background: var(--bg-tertiary);
+  border-color: var(--border-subtle);
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 480px) {
+  .modal__row { grid-template-columns: 1fr; }
+  .modal-dialog { padding: 1.25rem; }
+}
