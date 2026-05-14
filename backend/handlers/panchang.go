@@ -18,6 +18,8 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error":"invalid date, use YYYY-MM-DD"}`, http.StatusBadRequest)
 		return
 	}
+	// Shift to 06:30 UTC (12:00 PM IST) to sample the Tithi in the middle of the Indian day
+	t = t.Add(6*time.Hour + 30*time.Minute)
 	day := calculator.GetPanchangDay(t)
 	writeJSON(w, day)
 }
@@ -38,7 +40,8 @@ func GetMonth(w http.ResponseWriter, r *http.Request) {
 	days := make([]models.PanchangDay, 0, daysInMonth)
 
 	for d := 1; d <= daysInMonth; d++ {
-		t := time.Date(year, time.Month(month), d, 0, 0, 0, 0, time.UTC)
+		// 06:30 UTC is 12:00 PM IST
+		t := time.Date(year, time.Month(month), d, 6, 30, 0, 0, time.UTC)
 		days = append(days, calculator.GetPanchangDay(t))
 	}
 

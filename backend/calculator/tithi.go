@@ -46,10 +46,15 @@ func dateToJD(t time.Time) float64 {
 	y := float64(t.Year())
 	m := float64(t.Month())
 	d := float64(t.Day())
+	h := float64(t.Hour())
+	min := float64(t.Minute())
+	sec := float64(t.Second())
+	fractionalDay := (h + min/60.0 + sec/3600.0) / 24.0
+
 	return 367*y -
 		math.Floor(7*(y+math.Floor((m+9)/12))/4) +
 		math.Floor(275*m/9) +
-		d + 1721013.5
+		d + 1721013.5 + fractionalDay
 }
 
 // getSunLongitude returns the ecliptic longitude of the Sun (degrees)
