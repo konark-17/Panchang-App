@@ -27,6 +27,7 @@ export default function Header({ reminders, currentMonth, currentYear, onPrev, o
         </button>
         <button id="btn-show-settings" onClick={onShowSettings} className="header__btn" aria-label="Settings" title="Settings">
           <i className="ti ti-settings" aria-hidden="true" />
+          <span>Settings</span>
         </button>
         <button id="btn-add-reminder" onClick={onAddReminder} className="header__btn header__btn--primary">
           <i className="ti ti-plus" aria-hidden="true" />
