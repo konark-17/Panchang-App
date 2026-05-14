@@ -3,11 +3,18 @@ import { matchesReminder, DAYS_EN } from '../utils/tithi'
 
 const NOTIFIED_KEY = 'panchang_notified_date'
 
+let globalAudioCtx = null
+
 export function playAlarmSound(type = 'beep') {
   try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext
-    if (!AudioContext) return
-    const ctx = new AudioContext()
+    if (!globalAudioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext
+      if (!AudioContext) return
+      globalAudioCtx = new AudioContext()
+    }
+    const ctx = globalAudioCtx
+    if (ctx.state === 'suspended') ctx.resume()
+
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
     osc.connect(gain)

@@ -48,7 +48,12 @@ export const MONTHS_EN = [
 export function matchesReminder(date, tithi, reminder) {
   if (reminder.type === "tithi") {
     if (reminder.recurring) {
-      const nameMatch = tithi.name === reminder.tithiName
+      let nameMatch = tithi.name === reminder.tithiName
+      
+      if (reminder.tithiName === 'Budhashtami') {
+        nameMatch = tithi.name === 'Ashtami' && date.getDay() === 3
+      }
+
       const pakshaMatch = reminder.paksha === "Both" || tithi.paksha === reminder.paksha
       return nameMatch && pakshaMatch
     } else {
@@ -66,7 +71,7 @@ export function matchesReminder(date, tithi, reminder) {
 }
 
 /** Get unique tithi names for the dropdown */
-export const UNIQUE_TITHI_NAMES = [...new Set(TITHIS.map(t => t.name))]
+export const UNIQUE_TITHI_NAMES = [...new Set(TITHIS.map(t => t.name)), 'Budhashtami']
 
 /** Get YYYY-MM-DD from a local Date object without timezone shifting bugs */
 export function getLocalISODate(date) {

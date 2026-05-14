@@ -61,7 +61,7 @@ export default function App() {
         onPrev={prevMonth}
         onNext={nextMonth}
         onShowReminders={() => setShowReminders(v => !v)}
-        onAddReminder={() => setShowModal(true)}
+        onAddReminder={() => setShowModal('tithi')}
         onShowSettings={() => setShowSettings(true)}
       />
 
@@ -104,12 +104,13 @@ export default function App() {
         selectedDate={selectedDate}
         panchangDay={selectedDay}
         reminders={reminders}
-        onAddReminder={() => setShowModal(true)}
+        onAddReminder={() => setShowModal('day')}
       />
 
       {showModal && (
         <ReminderModal
           selectedDate={selectedDate}
+          initialType={typeof showModal === 'string' ? showModal : 'tithi'}
           onSave={(form, date) => { addReminder(form, date); setShowModal(false) }}
           onClose={() => setShowModal(false)}
         />

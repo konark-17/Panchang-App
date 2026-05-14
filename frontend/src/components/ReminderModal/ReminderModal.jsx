@@ -13,10 +13,12 @@ const DEFAULT_FORM = {
   time: '08:00',
 }
 
-export default function ReminderModal({ selectedDate, onSave, onClose }) {
+export default function ReminderModal({ selectedDate, onSave, onClose, initialType = 'tithi' }) {
   const [form, setForm] = useState({
     ...DEFAULT_FORM,
+    type: initialType,
     date: selectedDate ? getLocalISODate(selectedDate) : DEFAULT_FORM.date,
+    recurring: initialType === 'day' && selectedDate ? false : DEFAULT_FORM.recurring,
   })
 
   const set = patch => setForm(f => ({ ...f, ...patch }))
@@ -60,7 +62,7 @@ export default function ReminderModal({ selectedDate, onSave, onClose }) {
         {/* Type selector */}
         <label className="modal__label" style={{ marginTop: '1rem' }}>किस पर? / Reminder type</label>
         <div className="modal__type-grid">
-          {[['tithi', 'तिथि (Tithi)', '🌙'], ['day', 'दिन (Day/Date)', '📅']].map(([val, label, icon]) => (
+          {[['tithi', 'Remind by Tithi', '🌙'], ['day', 'Remind by Date/Day', '📅']].map(([val, label, icon]) => (
             <button
               key={val}
               id={`btn-type-${val}`}
