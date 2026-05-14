@@ -39,6 +39,7 @@ export default function SettingsModal({ settings, updateSetting, onClose }) {
               <button
                 className="settings__play-btn"
                 onClick={(e) => handlePreview(tone.id, e)}
+                onMouseEnter={(e) => handlePreview(tone.id, e)}
                 aria-label={`Preview ${tone.name}`}
                 title="Play Preview"
               >

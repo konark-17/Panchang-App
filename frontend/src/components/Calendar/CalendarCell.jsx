@@ -15,7 +15,6 @@ export default function CalendarCell({ date, panchangDay, reminders, isToday, is
   const isPurnima = tithi?.name === 'Purnima'
   const isAmavasya= tithi?.name === 'Amavasya'
   const isEkadashi= tithi?.name === 'Ekadashi'
-
   return (
     <div
       className={[

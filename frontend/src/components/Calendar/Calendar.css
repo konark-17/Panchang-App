@@ -5,6 +5,7 @@
   border: 0.5px solid var(--border-subtle);
   overflow: hidden;
   position: relative;
+  box-shadow: var(--shadow-md);
 }
 
 /* ─── Loading overlay ──────────────────────────────── */
