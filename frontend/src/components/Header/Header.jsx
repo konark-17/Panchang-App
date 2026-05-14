@@ -1,7 +1,7 @@
 import { MONTHS_EN, HINDI_MONTHS } from '../../utils/tithi'
 import './Header.css'
 
-export default function Header({ reminders, currentMonth, currentYear, onPrev, onNext, onShowReminders, onAddReminder }) {
+export default function Header({ reminders, currentMonth, currentYear, onPrev, onNext, onShowReminders, onAddReminder, onShowSettings }) {
   return (
     <header className="header">
       <div className="header__brand">
@@ -24,6 +24,9 @@ export default function Header({ reminders, currentMonth, currentYear, onPrev, o
         <button id="btn-show-reminders" onClick={onShowReminders} className="header__btn">
           <i className="ti ti-bell" aria-hidden="true" />
           <span>याद ({reminders.length})</span>
+        </button>
+        <button id="btn-show-settings" onClick={onShowSettings} className="header__btn" aria-label="Settings" title="Settings">
+          <i className="ti ti-settings" aria-hidden="true" />
         </button>
         <button id="btn-add-reminder" onClick={onAddReminder} className="header__btn header__btn--primary">
           <i className="ti ti-plus" aria-hidden="true" />

@@ -3,6 +3,7 @@ import { TITHIS, getLocalISODate } from './utils/tithi'
 import { usePanchang }       from './hooks/usePanchang'
 import { useReminders }      from './hooks/useReminders'
 import { useNotifications }  from './hooks/useNotifications'
+import { useSettings }       from './hooks/useSettings'
 
 import Header        from './components/Header/Header'
 import TodayBar      from './components/TodayBar/TodayBar'
@@ -10,6 +11,7 @@ import Calendar      from './components/Calendar/Calendar'
 import DayPanel      from './components/DayPanel/DayPanel'
 import ReminderList  from './components/ReminderList/ReminderList'
 import ReminderModal from './components/ReminderModal/ReminderModal'
+import SettingsModal from './components/SettingsModal/SettingsModal'
 
 export default function App() {
   const today = new Date()
@@ -19,10 +21,12 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(today)
   const [showReminders, setShowReminders] = useState(false)
   const [showModal,     setShowModal]     = useState(false)
+  const [showSettings,  setShowSettings]  = useState(false)
 
   // Data hooks
   const { days, loading, error } = usePanchang(currentYear, currentMonth)
   const { reminders, addReminder, deleteReminder } = useReminders()
+  const { settings, updateSetting } = useSettings()
 
   // Today's tithi (from API data or fall back to local TITHIS array index)
   const todayStr   = getLocalISODate(today)
@@ -34,7 +38,7 @@ export default function App() {
   const selectedDay  = days.find(d => d.date === selectedStr) ?? null
 
   // Fire time-based alarms
-  const { activeAlarm, stopAlarm } = useNotifications(reminders, todayTithi)
+  const { activeAlarm, stopAlarm } = useNotifications(reminders, todayTithi, settings)
 
   // Month navigation
   function prevMonth() {
@@ -58,6 +62,7 @@ export default function App() {
         onNext={nextMonth}
         onShowReminders={() => setShowReminders(v => !v)}
         onAddReminder={() => setShowModal(true)}
+        onShowSettings={() => setShowSettings(true)}
       />
 
       <TodayBar
@@ -107,6 +112,14 @@ export default function App() {
           selectedDate={selectedDate}
           onSave={(form, date) => { addReminder(form, date); setShowModal(false) }}
           onClose={() => setShowModal(false)}
+        />
+      )}
+
+      {showSettings && (
+        <SettingsModal
+          settings={settings}
+          updateSetting={updateSetting}
+          onClose={() => setShowSettings(false)}
         />
       )}
 
