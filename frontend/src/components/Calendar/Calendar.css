@@ -54,13 +54,19 @@
   border-bottom: 0.5px solid var(--border-subtle);
   cursor: pointer;
   position: relative;
-  transition: background 0.14s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   background: transparent;
   display: flex;
   flex-direction: column;
 }
 .cal-cell:nth-child(7n) { border-right: none; }
-.cal-cell:hover { background: var(--bg-tertiary); }
+.cal-cell:hover:not(.cal-cell--empty) {
+  background: var(--bg-tertiary);
+  transform: translateY(-2px) scale(1.03);
+  z-index: 2;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  border-radius: var(--radius-sm);
+}
 .cal-cell:focus-visible {
   outline: 2px solid rgba(99,102,241,0.6);
   outline-offset: -2px;
@@ -110,8 +116,9 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--text-danger);
-  animation: pulse 2s ease-in-out infinite;
+  background: var(--text-warning);
+  box-shadow: 0 0 6px var(--text-warning);
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 /* ─── Legend ─────────────────────────────────────────── */
