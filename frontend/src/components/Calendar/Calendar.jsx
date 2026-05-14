@@ -13,6 +13,10 @@ export default function Calendar({ year, month, days, reminders, selectedDate, t
     for (let d = 1; d <= daysInMonth; d++) {
       arr.push(new Date(year, month - 1, d))
     }
+    // Fill the rest of the final row with empty cells
+    while (arr.length % 7 !== 0) {
+      arr.push(null)
+    }
     return arr
   }, [year, month, firstDayOfWeek, daysInMonth])
 
