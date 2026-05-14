@@ -31,6 +31,7 @@ export default function SettingsModal({ settings, updateSetting, onClose }) {
               key={tone.id}
               className={`settings__option ${currentRingtone === tone.id ? 'settings__option--active' : ''}`}
               onClick={() => updateSetting('alarmRingtone', tone.id)}
+              onMouseEnter={(e) => handlePreview(tone.id, e)}
             >
               <div className="settings__option-info">
                 <span className="settings__option-name">{tone.name}</span>
