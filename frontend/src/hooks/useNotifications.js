@@ -1,56 +1,84 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { matchesReminder, DAYS_EN } from '../utils/tithi'
 
-const NOTIFIED_KEY = 'panchang_notified_date'
-
-/**
- * Fires browser notifications for today's matching reminders.
- * Only notifies once per calendar day.
- * Requires Notification API (supported on Android Chrome PWA, desktop, iOS 16.4+ PWA).
- */
 export function useNotifications(reminders, todayTithi) {
+  const [activeAlarm, setActiveAlarm] = useState(null)
+  const alarmIntervalRef = useRef(null)
+
   useEffect(() => {
-    if (!('Notification' in window)) return
     if (!todayTithi) return
 
-    const today = new Date()
-    const todayStr = today.toDateString()
-
-    // Skip if already notified today
-    if (localStorage.getItem(NOTIFIED_KEY) === todayStr) return
-
-    const requestAndNotify = async () => {
-      let permission = Notification.permission
-      if (permission === 'default') {
-        permission = await Notification.requestPermission()
-      }
-      if (permission !== 'granted') return
+    const checkAlarms = () => {
+      const now = new Date()
+      const currentH = now.getHours().toString().padStart(2, '0')
+      const currentM = now.getMinutes().toString().padStart(2, '0')
+      const currentTime = `${currentH}:${currentM}`
+      const todayStr = now.toDateString()
 
       const matching = reminders.filter(r =>
-        matchesReminder(today, todayTithi, r)
+        matchesReminder(now, todayTithi, r) && r.time === currentTime
       )
 
-      matching.forEach(r => {
-        const dayName = r.type === 'day' && r.recurring
-          ? `Every ${DAYS_EN[r.dayOfWeek]}`
-          : ''
-
-        new Notification('पंचांग स्मरण 🔔', {
-          body: r.type === 'tithi'
-            ? `आज ${todayTithi.hindi} है\n${r.reason}`
-            : `${dayName}\n${r.reason}`,
-          icon: '/icons/icon-192.png',
-          badge: '/icons/icon-192.png',
-          tag: `panchang-reminder-${r.id}`,
-          renotify: false,
-        })
-      })
-
-      if (matching.length > 0) {
-        localStorage.setItem(NOTIFIED_KEY, todayStr)
+      for (const r of matching) {
+        const alarmKey = `alarm_fired_${r.id}_${todayStr}`
+        if (!localStorage.getItem(alarmKey)) {
+          localStorage.setItem(alarmKey, 'true')
+          triggerAlarm(r)
+          break // Trigger one alarm at a time
+        }
       }
     }
 
-    requestAndNotify()
+    const interval = setInterval(checkAlarms, 10000)
+    checkAlarms()
+
+    return () => clearInterval(interval)
   }, [reminders, todayTithi])
+
+  const triggerAlarm = (reminder) => {
+    setActiveAlarm(reminder)
+    
+    const playBeep = () => {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext
+        if (!AudioContext) return
+        const ctx = new AudioContext()
+        const osc = ctx.createOscillator()
+        const gain = ctx.createGain()
+        osc.connect(gain)
+        gain.connect(ctx.destination)
+        
+        osc.type = 'sine'
+        osc.frequency.value = 880 // A5 frequency
+        
+        gain.gain.setValueAtTime(0, ctx.currentTime)
+        gain.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.05)
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3)
+        
+        osc.start(ctx.currentTime)
+        osc.stop(ctx.currentTime + 0.3)
+      } catch (e) {
+        console.error("Audio play failed", e)
+      }
+    }
+
+    playBeep()
+    alarmIntervalRef.current = setInterval(playBeep, 1000)
+  }
+
+  const stopAlarm = () => {
+    setActiveAlarm(null)
+    if (alarmIntervalRef.current) {
+      clearInterval(alarmIntervalRef.current)
+      alarmIntervalRef.current = null
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (alarmIntervalRef.current) clearInterval(alarmIntervalRef.current)
+    }
+  }, [])
+
+  return { activeAlarm, stopAlarm }
 }

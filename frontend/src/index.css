@@ -137,6 +137,7 @@ button:focus-visible { outline: 2px solid rgba(255,153,51,0.75); outline-offset:
 /* ─── Inputs & Selects ───────────────────────────────────────────────────────── */
 input[type="text"],
 input[type="date"],
+input[type="time"],
 select {
   font-family: inherit;
   font-size: 13px;
@@ -155,12 +156,14 @@ select {
 input[type="text"]::placeholder { color: var(--text-tertiary); }
 input[type="text"]:focus,
 input[type="date"]:focus,
+input[type="time"]:focus,
 select:focus {
   border-color: rgba(255,153,51,0.7);
   box-shadow: 0 0 0 3px rgba(255,153,51,0.15);
 }
 select option { background: #301a00; color: var(--text-primary); }
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(0.6) sepia(1) saturate(3) hue-rotate(200deg);
   cursor: pointer;
 }
@@ -202,3 +205,76 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (max-width: 600px) {
   #root { padding: 0.75rem 0.5rem 5rem; }
 }
+
+/* ─── Alarm Overlay ──────────────────────────────────────────────────────────── */
+.alarm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.alarm-dialog {
+  background: var(--gradient-accent);
+  border-radius: var(--radius-2xl);
+  padding: 2.5rem 2rem;
+  width: min(400px, 100%);
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(255, 153, 51, 0.4);
+  animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alarm-icon {
+  font-size: 48px;
+  animation: pulse 1s ease-in-out infinite;
+  margin-bottom: 8px;
+}
+
+.alarm-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.alarm-reason {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.alarm-time {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 16px;
+}
+
+.alarm-stop {
+  background: #fff;
+  color: #cc2200;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: var(--radius-xl);
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.2s;
+}
+
+.alarm-stop:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  background: #fff4e6;
+}
+

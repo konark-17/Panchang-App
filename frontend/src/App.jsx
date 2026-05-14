@@ -33,8 +33,8 @@ export default function App() {
   const selectedStr  = selectedDate ? getLocalISODate(selectedDate) : null
   const selectedDay  = days.find(d => d.date === selectedStr) ?? null
 
-  // Fire browser notifications
-  useNotifications(reminders, todayTithi)
+  // Fire time-based alarms
+  const { activeAlarm, stopAlarm } = useNotifications(reminders, todayTithi)
 
   // Month navigation
   function prevMonth() {
@@ -108,6 +108,22 @@ export default function App() {
           onSave={(form, date) => { addReminder(form, date); setShowModal(false) }}
           onClose={() => setShowModal(false)}
         />
+      )}
+
+      {/* Alarm Overlay */}
+      {activeAlarm && (
+        <div className="alarm-backdrop" role="dialog" aria-modal="true">
+          <div className="alarm-dialog">
+            <div className="alarm-icon">🔔</div>
+            <h2 className="alarm-title">समय हो गया! / Alarm</h2>
+            <p className="alarm-reason">{activeAlarm.reason}</p>
+            <p className="alarm-time">Set for {activeAlarm.time}</p>
+            <button id="btn-stop-alarm" className="alarm-stop" onClick={stopAlarm}>
+              <i className="ti ti-bell-off" aria-hidden="true" />
+              Stop Alarm / बंद करें
+            </button>
+          </div>
+        </div>
       )}
     </>
   )

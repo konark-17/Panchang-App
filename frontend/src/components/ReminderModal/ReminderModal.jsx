@@ -10,6 +10,7 @@ const DEFAULT_FORM = {
   dayOfWeek: 0,
   recurring: true,
   date: getLocalISODate(new Date()),
+  time: '08:00',
 }
 
 export default function ReminderModal({ selectedDate, onSave, onClose }) {
@@ -44,6 +45,16 @@ export default function ReminderModal({ selectedDate, onSave, onClose }) {
           value={form.reason}
           onChange={e => set({ reason: e.target.value })}
           autoFocus
+        />
+
+        {/* Time */}
+        <label className="modal__label" style={{ marginTop: '0.75rem' }}>समय / Time *</label>
+        <input
+          id="input-reminder-time"
+          type="time"
+          value={form.time || '08:00'}
+          onChange={e => set({ time: e.target.value })}
+          required
         />
 
         {/* Type selector */}
