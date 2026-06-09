@@ -48,6 +48,35 @@ func GetMonth(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, days)
 }
 
+// GetYear handles GET /api/panchang/year?year=YYYY
+// Returns all 12 months of panchang data in one call
+func GetYear(w http.ResponseWriter, r *http.Request) {
+	yearStr := r.URL.Query().Get("year")
+	year, err := strconv.Atoi(yearStr)
+	if err != nil || year < 1900 || year > 2100 {
+		http.Error(w, `{"error":"invalid year, use YYYY between 1900-2100"}`, http.StatusBadRequest)
+		return
+	}
+
+	type YearResponse struct {
+		Year   int                          `json:"year"`
+		Months map[string][]models.PanchangDay `json:"months"`
+	}
+
+	months := make(map[string][]models.PanchangDay, 12)
+	for m := 1; m <= 12; m++ {
+		daysInMonth := time.Date(year, time.Month(m+1), 0, 0, 0, 0, 0, time.UTC).Day()
+		days := make([]models.PanchangDay, 0, daysInMonth)
+		for d := 1; d <= daysInMonth; d++ {
+			t := time.Date(year, time.Month(m), d, 6, 30, 0, 0, time.UTC)
+			days = append(days, calculator.GetPanchangDay(t))
+		}
+		key := time.Month(m).String()
+		months[key] = days
+	}
+	writeJSON(w, YearResponse{Year: year, Months: months})
+}
+
 func writeJSON(w http.ResponseWriter, v any) {
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(v); err != nil {
