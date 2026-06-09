@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TITHIS, getLocalISODate } from './utils/tithi'
 import { usePanchang }       from './hooks/usePanchang'
 import { useReminders }      from './hooks/useReminders'
@@ -49,6 +49,22 @@ export default function App() {
     if (currentMonth === 12) { setCurrentMonth(1); setCurrentYear(y => y + 1) }
     else setCurrentMonth(m => m + 1)
   }
+
+  // Keyboard shortcuts: ← / → for month nav, Escape to close modals
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+      if (e.key === 'ArrowLeft')  prevMonth()
+      if (e.key === 'ArrowRight') nextMonth()
+      if (e.key === 'Escape') {
+        setShowModal(false)
+        setShowSettings(false)
+        setShowReminders(false)
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [currentMonth, currentYear])
 
   return (
     <>
