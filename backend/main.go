@@ -27,6 +27,7 @@ func main() {
 	// Panchang endpoints
 	mux.HandleFunc("/api/panchang/day", handlers.GetDay)
 	mux.HandleFunc("/api/panchang/month", handlers.GetMonth)
+	mux.HandleFunc("/api/panchang/year", handlers.GetYear)
 
 	// Health check (for Render.com)
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
