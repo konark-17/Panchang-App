@@ -7,6 +7,40 @@ import (
 	"panchang/models"
 )
 
+// All 27 Nakshatras (lunar mansions)
+var nakshatraList = []models.Nakshatra{
+	{0, "Ashwini", "अश्विनी"},
+	{1, "Bharani", "भरणी"},
+	{2, "Krittika", "कृत्तिका"},
+	{3, "Rohini", "रोहिणी"},
+	{4, "Mrigashira", "मृगशिरा"},
+	{5, "Ardra", "आर्द्रा"},
+	{6, "Punarvasu", "पुनर्वसु"},
+	{7, "Pushya", "पुष्य"},
+	{8, "Ashlesha", "आश्लेषा"},
+	{9, "Magha", "मघा"},
+	{10, "Purva Phalguni", "पूर्व फाल्गुनी"},
+	{11, "Uttara Phalguni", "उत्तर फाल्गुनी"},
+	{12, "Hasta", "हस्त"},
+	{13, "Chitra", "चित्रा"},
+	{14, "Swati", "स्वाती"},
+	{15, "Vishakha", "विशाखा"},
+	{16, "Anuradha", "अनुराधा"},
+	{17, "Jyeshtha", "ज्येष्ठा"},
+	{18, "Mula", "मूल"},
+	{19, "Purva Ashadha", "पूर्वाषाढा"},
+	{20, "Uttara Ashadha", "उत्तराषाढा"},
+	{21, "Shravana", "श्रवण"},
+	{22, "Dhanishtha", "धनिष्ठा"},
+	{23, "Shatabhisha", "शतभिषा"},
+	{24, "Purva Bhadrapada", "पूर्व भाद्रपद"},
+	{25, "Uttara Bhadrapada", "उत्तर भाद्रपद"},
+	{26, "Revati", "रेवती"},
+}
+
+// Hindi weekday names (Var)
+var varNames = []string{"रविवार", "सोमवार", "मंगलवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"}
+
 // All 30 tithis in order (Shukla 1–15, Krishna 1–15)
 var tithiList = []models.Tithi{
 	{0, "Pratipada", "प्रतिपदा", "Shukla", 1},
@@ -78,6 +112,16 @@ func getMoonLongitude(jd float64) float64 {
 	)
 }
 
+// GetNakshatra returns the Nakshatra for a given Moon longitude
+func GetNakshatra(moonLon float64) models.Nakshatra {
+	// Each Nakshatra spans 360/27 ≈ 13.333 degrees
+	idx := int(moonLon / (360.0 / 27.0))
+	if idx >= len(nakshatraList) {
+		idx = len(nakshatraList) - 1
+	}
+	return nakshatraList[idx]
+}
+
 // GetTithi returns the tithi for a given date
 func GetTithi(t time.Time) models.Tithi {
 	jd := dateToJD(t)
@@ -93,10 +137,22 @@ func GetTithi(t time.Time) models.Tithi {
 
 // GetPanchangDay returns the full panchang for a given date
 func GetPanchangDay(t time.Time) models.PanchangDay {
-	tithi := GetTithi(t)
+	jd := dateToJD(t)
+	sun := getSunLongitude(jd)
+	moon := getMoonLongitude(jd)
+	diff := math.Mod(moon-sun+360, 360)
+	idx := int(diff / 12)
+	if idx >= len(tithiList) {
+		idx = len(tithiList) - 1
+	}
+	tithi := tithiList[idx]
+	nakshatra := GetNakshatra(math.Mod(moon+360, 360))
+	var_ := varNames[int(t.Weekday())]
 	return models.PanchangDay{
 		Date:       t.Format("2006-01-02"),
 		Tithi:      tithi,
+		Nakshatra:  nakshatra,
+		Var:        var_,
 		IsPurnima:  tithi.Name == "Purnima",
 		IsAmavasya: tithi.Name == "Amavasya",
 		IsEkadashi: tithi.Name == "Ekadashi",
